@@ -313,7 +313,6 @@ async def parse(url):
         async def safe_text(page, label: str):
             label = normalize_apostrophes(label)
             try:
-                # Ищем родителя span с label
                 parent_xpath = f"xpath=//span[contains(normalize-space(), '{label}')]/.."
                 parent = page.locator(parent_xpath)
 
@@ -321,7 +320,6 @@ async def parse(url):
                     print(f"Problem: '{label}' parent not found")
                     return None
 
-                # Ищем первый span, который не содержит label
                 value_xpath = f"xpath=.//span[not(contains(normalize-space(), '{label}'))]"
                 value = parent.locator(value_xpath).first
 
@@ -334,7 +332,6 @@ async def parse(url):
                 print(f"Error processing '{label}': {e}")
                 return None
 
-        # Использование
         color = await safe_text(page, "Колір")
         producer = await safe_text(page, "Виробник")
         art = await safe_text(page, "Артикул")
